@@ -44,6 +44,7 @@ const EditPost: FC<EditPostProps> = ({ params }) => {
                 setUploading(false);
             }
         }
+        updatePost(data)
 
     }
     const { mutate: updatePost, isLoading: isLoadingSubmit, isError } = useMutation({
