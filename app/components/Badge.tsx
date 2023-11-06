@@ -1,10 +1,11 @@
 import React, { FC } from 'react'
 interface BadgeProps {
     children: React.ReactNode
+    , bg?: string
 }
-const Badge: FC<BadgeProps> = ({ children }: BadgeProps) => {
+const Badge: FC<BadgeProps> = ({ children, bg }: BadgeProps) => {
     return (
-        <div className="badge badge-primary text-sm">{children}</div>
+        <div className={`badge text-sm ${bg} text-[#fcfeff]`}>{children}</div>
     )
 }
 

@@ -19,7 +19,6 @@ export async function PATCH(req: Request, context: contextProps) {
             data: {
                 title: body.title,
                 content: body.content,
-                tagId: body.tagId,
                 imageUrl: body.imageUrl
             }
         })
@@ -51,8 +50,8 @@ export async function GET(req: Request, context: contextProps) {
                 id: params.postId
             },
             include: {
-                Tag: true
-            },
+                tags: true
+            }
         })
         return NextResponse.json(post, { status: 200 });
     } catch (error) {

@@ -15,7 +15,6 @@ const CreatePage = () => {
 
   const { edgestore } = useEdgeStore();
 
-
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
 

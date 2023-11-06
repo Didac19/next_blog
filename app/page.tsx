@@ -9,7 +9,8 @@ async function getPosts() {
         title: true,
         content: true,
         imageUrl: true,
-        Tag: true,
+        tags: true,
+        authorId: true,
         createdAt: true
       },
       orderBy: {

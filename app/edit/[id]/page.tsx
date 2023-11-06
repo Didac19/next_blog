@@ -63,6 +63,8 @@ const EditPost: FC<EditPostProps> = ({ params }) => {
         queryKey: ['post', params.id],
         queryFn: async () => {
             const response = await axios.get(`/api/posts/${params.id}`)
+            console.log(response.data);
+
             setOldFileUrl(response.data.imageUrl)
             return response.data;
         }

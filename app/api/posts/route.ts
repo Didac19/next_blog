@@ -11,13 +11,20 @@ export async function POST(req: Request, res: Response) {
             data: {
                 title: body.title,
                 content: body.content,
-                tagId: body.tagId,
-                imageUrl: body.imageUrl
-            }
+                authorId: "72a78e8e-5098-4ae7-ace1-e7cde9db9d73",
+                imageUrl: body.imageUrl,
+                tags: {
+                    connect: body.tags.map((tagId: string) => ({ id: tagId })),
+                },
+            },
+
         })
+
         return NextResponse.json({ message: 'POST request' }, { status: 200 });
 
-    } catch (error) {
-        return NextResponse.json({ message: 'Could not create post' }, { status: 500 });
+    } catch (error: any) {
+        console.log(error);
+
+        return NextResponse.json({ message: 'Could not create post', error: error.message }, { status: 500 });
     }
 }

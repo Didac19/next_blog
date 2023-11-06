@@ -15,13 +15,15 @@ interface PostFormProps {
   isLoadingSubmit?: boolean
 }
 const PostForm: FC<PostFormProps> = ({ submit, isEditing, initialValue, isLoadingSubmit }) => {
-  const { register, handleSubmit } = useForm<FormInputPost>({
+  const { register, handleSubmit, setValue, watch } = useForm<FormInputPost>({
     defaultValues: initialValue
   });
   const { data: tags, isLoading: isLoadingTags } = useQuery<Tag[]>({
     queryKey: ['tags'],
     queryFn: async () => {
       const res = await axios.get('/api/tags');
+      console.log('tags', res.data);
+
       return res.data;
     }
   });
@@ -43,15 +45,34 @@ const PostForm: FC<PostFormProps> = ({ submit, isEditing, initialValue, isLoadin
       <input type="file" className="file-input file-input-bordered w-full max-w-lg"  {...register('imageUrl', { required: false })} />
 
       {isLoadingTags ?
-        <Loading /> :
-        <select className="select select-bordered w-full max-w-lg" {...register('tagId', { required: true })} defaultValue={''}>
-          <option disabled value=''>
-            Select tags
-          </option>
-          {tags?.map((tag: any) => (
-            <option value={tag.id} key={tag.id}>{tag.name}</option>
-          ))}
-        </select>}
+        <Loading /> : (
+
+          <div className="flex">
+            {
+              tags?.map((tag: any) => (
+                <label className="label flex items-center gap-2" key={tag.id}>
+                  <span>{tag.name}</span>
+                  <input
+                    type="checkbox"
+                    value={tag.id}
+                    defaultChecked={initialValue?.tags.some((postTag: any) => postTag.id === tag.id)}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      const currentTags = Array.isArray(watch('tags')) ? watch('tags') : [];
+                      setValue('tags',
+                        checked
+                          ? [...currentTags, tag.id]
+                          : currentTags.filter((tagId: string) => tagId !== tag.id)
+                      );
+                    }}
+                  />
+                </label>
+              ))
+            }
+          </div>
+        )
+
+      }
 
 
       <SubmitBtn isSubmiting={isLoadingSubmit}>

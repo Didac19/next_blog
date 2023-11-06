@@ -4,12 +4,13 @@ import Badge from "./Badge";
 import { Tag } from "@prisma/client";
 import Image from "next/image";
 
+import colorTags from '@/app/components/colorTags'
 interface PostCardProps {
   post: {
     id: string;
     title: string;
     content: string;
-    Tag: Tag;
+    tags: Tag[];
     imageUrl: string;
     createdAt: Date;
   };
@@ -25,7 +26,13 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
             <Link href={`/blog/${post.id}`} className="pr-4">
               <h2 className="card-title text-4xl font-bold text-slate-600 hover:text-purple-500">{post.title}</h2>
             </Link>
-            <Badge>{post.Tag.name}</Badge>
+            <div className="grid grid-cols-2 gap-1">
+              {post.tags.map((tag) => (
+                <Badge key={tag.id} bg={colorTags[tag.name.toUpperCase()]}>{tag.name}</Badge>
+              ))
+              }
+            </div>
+
           </div>
           <p className="mt-2 text-2xl text-[#637e94]">{post.content.slice(0, 100)}</p>
         </div>
