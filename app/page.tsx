@@ -1,13 +1,42 @@
-import Image from "next/image";
 import PostCard from "./components/PostCard";
+import { db } from "./lib/db";
 
-export default function Home() {
+async function getPosts() {
+  try {
+    const response = await db.post.findMany({
+      select: {
+        id: true,
+        title: true,
+        content: true,
+        imageUrl: true,
+        Tag: true,
+        createdAt: true
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+
+  }
+}
+export default async function Home() {
+  const posts = await getPosts();
   return (
-    <main className="grid items-center justify-center md:grid-cols-2 lg:grid-cols-3 gap-4 mt-10 w-full">
-      <PostCard />
-      <PostCard />
-      <PostCard />
-      <PostCard />
+    <main className="py-10 md:w-4/5">
+      {posts?.length === 0 ? <p className='text-center text-2xl font-bold'>No posts</p> :
+        (<div>
+          <h1 className="text-center text-5xl mb-4">Posts: {posts?.length}</h1>
+          {posts?.map((post) => (
+            <PostCard key={post.id} post={post} />
+          )
+          )}
+        </div>)
+      }
+
+
     </main>
   );
 }

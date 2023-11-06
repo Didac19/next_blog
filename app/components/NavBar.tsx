@@ -4,7 +4,7 @@ import React from "react";
 
 const NavBar = () => {
   return (
-    <div className="navbar bg-neutral-100">
+    <div className="navbar bg-[#384654] text-[#eceff2]">
       <div className="mx-auto w-4/5">
         <div className="flex-1">
           <Link className="btn btn-ghost normal-case text-xl" href='/'><BookOpenCheck color="blue" /></Link>
